@@ -1,25 +1,25 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+//Сделать так что бы ползователь заполнил все колонки 
+//кроме зимнего или летнего расхода если они не известны
+//и выводить диалоговое окно с соответствующей информацией
+
 package jpanel;
 
+import database.DBHelper;
 import java.awt.Font;
 import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-/**
- *
- * @author Николай
- */
+
 public class JPInDataCar extends javax.swing.JPanel {
     
     //Font
     private Font normF = new Font("Times New Roman", 0, 14);
+    
+    private DBHelper dbHelp;
     
     //JLable
     private JLabel jlabJPIDC_Brend;//1
@@ -36,7 +36,7 @@ public class JPInDataCar extends javax.swing.JPanel {
     private JTextField jtfJPIDC_CarStateNumber;//2
     private JTextField jtfJPIDC_ConsumptionSummer;//3
     private JTextField jtfJPIDC_ConsumptionWinter;//4
-    private static JTextField jtfJPIDC_Mileage;//5
+    private JTextField jtfJPIDC_Mileage;//5
     
     //методы создания меток
     private JLabel jlab_Brend(){
@@ -84,16 +84,27 @@ public class JPInDataCar extends javax.swing.JPanel {
         jtfJPIDC_Mileage.setFont(normF); // NOI18N
         jtfJPIDC_Mileage.setToolTipText("Введите общий пробег авто");
         jtfJPIDC_Mileage.addKeyListener(new KeyAdapter(){
-            
-            
+            public void keyTyped(KeyEvent e){
+                char ch = e.getKeyChar();
+                if((ch < '0') || (ch > '9'))
+                    e.consume();  
+            }    
         });
         return jtfJPIDC_Mileage;
     }
     private JTextField jtf_ConsSummer(){
         jtfJPIDC_ConsumptionSummer = new JTextField();
         jtfJPIDC_ConsumptionSummer.setFont(normF); // NOI18N
-        jtfJPIDC_ConsumptionSummer.setToolTipText("Введите количество расходуемого "
-                + "топлива на 100 км. Летом");
+        jtfJPIDC_ConsumptionSummer.setToolTipText("Введите количество "
+                + "расходуемого топлива на 100 км. Летом");
+        jtfJPIDC_ConsumptionSummer.addKeyListener(new KeyAdapter(){
+           public void keyTyped(KeyEvent e){
+               char ch = e.getKeyChar();
+               boolean flag = checkPresencePoint(jtfJPIDC_ConsumptionSummer);
+               checkCorrectSymbol(ch, flag, e);  
+           }
+        });
+        
         return jtfJPIDC_ConsumptionSummer;
     }
     private JTextField jtf_ConsWinter(){
@@ -101,6 +112,13 @@ public class JPInDataCar extends javax.swing.JPanel {
         jtfJPIDC_ConsumptionWinter.setFont(normF); // NOI18N
         jtfJPIDC_ConsumptionWinter.setToolTipText("Введите количество "
                 + "расходуемого топлива на 100км. Зимой");
+        jtfJPIDC_ConsumptionWinter.addKeyListener(new KeyAdapter(){
+           public void keyTyped(KeyEvent e){
+               char ch = e.getKeyChar();
+               boolean flag = checkPresencePoint(jtfJPIDC_ConsumptionWinter);
+               checkCorrectSymbol(ch, flag, e);
+           } 
+        });
         return jtfJPIDC_ConsumptionWinter;
     }
     
@@ -109,7 +127,14 @@ public class JPInDataCar extends javax.swing.JPanel {
         jbtnJPIDC_Cancel = new JButton();
         jbtnJPIDC_Cancel.setFont(normF); // NOI18N
         jbtnJPIDC_Cancel.setText("Отмена");
-        jbtnJPIDC_Cancel.setToolTipText("Отменить вводимые данные");
+        jbtnJPIDC_Cancel.setToolTipText("Отменить все вводимые данные");
+        jbtnJPIDC_Cancel.addActionListener(ae -> {
+            jtfJPIDC_Brend.setText("");
+            jtfJPIDC_CarStateNumber.setText("");
+            jtfJPIDC_ConsumptionSummer.setText("");
+            jtfJPIDC_ConsumptionWinter.setText("");
+            jtfJPIDC_Mileage.setText("");
+        });
         return jbtnJPIDC_Cancel;
     }
     
@@ -118,6 +143,12 @@ public class JPInDataCar extends javax.swing.JPanel {
         jbtnJPIDC_Save.setFont(normF); // NOI18N
         jbtnJPIDC_Save.setText("Сохранить");
         jbtnJPIDC_Save.setToolTipText("Сохранить вводимые данные");
+        jbtnJPIDC_Save.addActionListener(av -> {
+            
+            dbHelp = new DBHelper(getTextBrend(), getTextStateNumber(),
+                    getMileage(), getConsumS(), getConsumW());
+            dbHelp.closeConnect();
+        });
         return jbtnJPIDC_Save;
     }
     
@@ -186,17 +217,89 @@ public class JPInDataCar extends javax.swing.JPanel {
         );
     }
     
-    public static JTextField getTFMileage(){
-        return jtfJPIDC_Mileage;
+    private boolean checkPresencePoint(JTextField tf){
+        
+        char[] tfText = tf.getText().toCharArray(); 
+        for(int i = 0; i < tfText.length; i++ ){
+            if(tfText[i] == '.')
+                return true;
+        }
+        return false;
     }
     
+    private void checkCorrectSymbol(char ch, boolean b, KeyEvent e){
+        switch(ch){
+                case'.': 
+                        if(b)
+                            e.consume();
+                            break;
+                case'0':break;
+                case'1':break;
+                case'2':break;
+                case'3':break;
+                case'4':break;
+                case'5':break;
+                case'6':break;
+                case'7':break;
+                case'8':break;
+                case'9':break;
+                       
+                default: e.consume();break;
+               }
+    }
+    
+    /**
+     *
+     * @return
+     */
+    public String getTextBrend(){
+        return jtfJPIDC_Brend.getText();
+    }
+    
+    public String getTextStateNumber(){
+        return jtfJPIDC_CarStateNumber.getText();
+    }
+    
+    public int getMileage(){
+        int m = 0;
+        try{
+            m = Integer.parseInt(jtfJPIDC_Mileage.getText());
+        }
+        catch(NumberFormatException e){
+            e.printStackTrace();
+            return m = 0;
+        }
+        return m;
+    }
+    
+    public double getConsumS(){
+        double c = 0;
+        try{
+            c = Double.parseDouble(jtfJPIDC_ConsumptionSummer.getText());
+        }
+        catch(NumberFormatException e){
+            e.printStackTrace();
+            return c = 0;
+        }
+        return c;
+    }
+    
+    public double getConsumW(){
+        double c = 0;
+        try{
+            c = Double.parseDouble(jtfJPIDC_ConsumptionWinter.getText());
+        }
+        catch(NumberFormatException e){
+            e.printStackTrace();
+            return c = 0;
+        }
+        return c;
+    }
     
     public JPInDataCar() {
         initComponents();
     }
-
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
+                       
     private void initComponents() {
         
         setBorder(javax.swing.BorderFactory.createTitledBorder(null, 

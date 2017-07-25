@@ -97,7 +97,7 @@ public class JPanelTeken extends javax.swing.JPanel {
         jlabJPIDC_ConsumptionSummer.setText("Расход топлива :");
 
         jtfJPIDC_ConsumptionSummer.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        jtfJPIDC_ConsumptionSummer.setToolTipText("Введите количество расходуемого топлива на 100 км. Летом");
+        jtfJPIDC_ConsumptionSummer.setToolTipText("Введите количество расходуемого топлива на 100 км.");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);

@@ -1,55 +1,64 @@
 
 package jpanel;
 
+import java.awt.Font;
+import javax.swing.GroupLayout;
+import javax.swing.JLabel;
+
 
 public class JPOutCarData extends javax.swing.JPanel {
+    
+    private Font boldF = new Font("Times New Roman", 3, 14);
+    private Font normF = new Font("Times New Roman", 0, 14);
 
-    private javax.swing.JLabel jlabJPOCD_DataMileage;
-    private javax.swing.JLabel jlabJPOCD_DataNameCar;
-    private javax.swing.JLabel jlabJPOCD_DataStateNumber;
-    private javax.swing.JLabel jlabJPOCD_Mileage;
-    private javax.swing.JLabel jlabJPOCD_NameCar;
-    private javax.swing.JLabel jlabJPOCD_StateNumder;
+    private JLabel jlabJPOCD_DataMileage;
+    private JLabel jlabJPOCD_DataNameCar;
+    private JLabel jlabJPOCD_DataStateNumber;
+    private JLabel jlabJPOCD_Mileage;
+    private JLabel jlabJPOCD_NameCar;
+    private JLabel jlabJPOCD_StateNumder;
     
-    
-    
-    public JPOutCarData() {
-        initComponents();
+    // Эти не трогаем вообще за ненадобностью
+    private JLabel createDNC(){
+        jlabJPOCD_DataNameCar = new JLabel("Автомобиль :");
+        jlabJPOCD_DataNameCar.setFont(normF); // NOI18N
+        return jlabJPOCD_DataNameCar;
+        
     }
-
+    private JLabel createDSN(){
+        jlabJPOCD_DataStateNumber = new JLabel("Гос номер :");
+        jlabJPOCD_DataStateNumber.setFont(normF); // NOI18N
+        return jlabJPOCD_DataStateNumber;
+        
+    }
+    private JLabel createDM(){
+        jlabJPOCD_DataMileage = new JLabel("Пробег км :");
+        jlabJPOCD_DataMileage.setFont(normF); // NOI18N
+        return jlabJPOCD_DataMileage;
+        
+    }
     
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
-    private void initComponents() {
-
-        jlabJPOCD_DataNameCar = new javax.swing.JLabel();
-        jlabJPOCD_NameCar = new javax.swing.JLabel();
-        jlabJPOCD_DataStateNumber = new javax.swing.JLabel();
-        jlabJPOCD_StateNumder = new javax.swing.JLabel();
-        jlabJPOCD_DataMileage = new javax.swing.JLabel();
-        jlabJPOCD_Mileage = new javax.swing.JLabel();
-
-        setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Вывод данных об авто", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Times New Roman", 1, 16))); // NOI18N
-
-        jlabJPOCD_DataNameCar.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        jlabJPOCD_DataNameCar.setText("Автомобиль :");
-
-        jlabJPOCD_NameCar.setFont(new java.awt.Font("Times New Roman", 3, 14)); // NOI18N
-        jlabJPOCD_NameCar.setText("Такой то такой автомобиль");
-
-        jlabJPOCD_DataStateNumber.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        jlabJPOCD_DataStateNumber.setText("Гос номер :");
-
-        jlabJPOCD_StateNumder.setFont(new java.awt.Font("Times New Roman", 3, 14)); // NOI18N
-        jlabJPOCD_StateNumder.setText("а000аа000");
-
-        jlabJPOCD_DataMileage.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        jlabJPOCD_DataMileage.setText("Пробег км :");
-
-        jlabJPOCD_Mileage.setFont(new java.awt.Font("Times New Roman", 3, 14)); // NOI18N
-        jlabJPOCD_Mileage.setText("0");
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+    
+    //Эти выводят информацию
+    private JLabel getNameCar(){
+        jlabJPOCD_NameCar = new JLabel("Такой то такой автомобиль");
+        jlabJPOCD_NameCar.setFont(boldF); // NOI18N
+        return jlabJPOCD_NameCar;
+    }
+    private JLabel getStateNumber(){
+        jlabJPOCD_StateNumder = new JLabel("а000аа000");
+        jlabJPOCD_StateNumder.setFont(boldF); // NOI18N
+        return jlabJPOCD_StateNumder;
+        
+    }
+    private JLabel getMileage(){
+        jlabJPOCD_Mileage = new JLabel("0");
+        jlabJPOCD_Mileage.setFont(boldF); // NOI18N
+        return jlabJPOCD_Mileage;
+        
+    }
+    
+    private void horisontG(GroupLayout layout){
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -57,19 +66,21 @@ public class JPOutCarData extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jlabJPOCD_DataNameCar)
+                        .addComponent(createDNC())
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jlabJPOCD_NameCar))
+                        .addComponent(getNameCar()))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jlabJPOCD_DataStateNumber)
+                        .addComponent(createDSN())
                         .addGap(18, 18, 18)
-                        .addComponent(jlabJPOCD_StateNumder))
+                        .addComponent(getStateNumber()))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jlabJPOCD_DataMileage)
+                        .addComponent(createDM())
                         .addGap(18, 18, 18)
-                        .addComponent(jlabJPOCD_Mileage)))
+                        .addComponent(getMileage())))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+    }
+    private void verticalG(GroupLayout layout){
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -86,7 +97,28 @@ public class JPOutCarData extends javax.swing.JPanel {
                     .addComponent(jlabJPOCD_DataMileage)
                     .addComponent(jlabJPOCD_Mileage)))
         );
-    }// </editor-fold>                        
+    }
+    
+    
+    
+    public JPOutCarData() {
+        initComponents();
+    }
+
+    
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
+    private void initComponents() {
+
+        setBorder(javax.swing.BorderFactory.createTitledBorder(null, 
+                "Вывод данных об авто", 
+                javax.swing.border.TitledBorder.CENTER, 
+                javax.swing.border.TitledBorder.TOP, 
+                new java.awt.Font("Times New Roman", 1, 16))); // NOI18N
+        GroupLayout layout = new GroupLayout(this);
+        horisontG(layout);
+        verticalG(layout);
+    }                       
 
 
                         
